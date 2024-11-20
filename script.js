@@ -9,8 +9,6 @@ const resetButton = document.getElementById("resetBtn");
 
 const lapList = document.getElementById("laplist");
 
-// Variables for our stopwatch
-
 let minutes = 0;
 let seconds = 0;
 let milliseconds = 0;
@@ -27,11 +25,23 @@ function startTimer() {
   startButton.disabled = true;
 }
 
-function stopTimer() {}
+function stopTimer() {
+  clearInterval(interval);
+  addToLapList();
+  resetTimerData();
+  startButton.disabled = false;
+}
 
-function pauseTimer() {}
+function pauseTimer() {
+  clearInterval(interval);
+  startButton.disabled = false;
+}
 
-function resetTimer() {}
+function resetTimer() {
+  clearInterval(interval);
+  resetTimerData();
+  startButton.disabled = false;
+}
 
 function updateTimer() {
   milliseconds++;
@@ -54,4 +64,25 @@ function displayTimer() {
 
 function padTime(time) {
   return time.toString().padStart(2, "0");
+}
+
+function resetTimerData() {
+  minutes = 0;
+  seconds = 0;
+  milliseconds = 0;
+
+  displayTimer();
+}
+
+function addToLapList() {
+  const lapTime = `${padTime(minutes)}:${padTime(seconds)}:${padTime(
+    milliseconds
+  )}`;
+
+  const listItem = document.createElement("li");
+  listItem.innerHTML = `<span>Lap ${
+    lapList.childElementCount + 1
+  }: </span>${lapTime}`;
+
+  lapList.appendChild(listItem);
 }
